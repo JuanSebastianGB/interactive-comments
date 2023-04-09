@@ -14,26 +14,37 @@ describe('CommentSection', () => {
   });
   it.concurrent('should render the given info', () => {
     const info = {
-      username: 'test',
+      user: {
+        image: {
+          png: './images/avatars/image-maxblagun.png',
+          webp: './images/avatars/image-maxblagun.webp',
+        },
+        username: 'maxblagun',
+      },
       content: 'hello world',
       createdAt: '1 month ago',
     };
     render(<CommentSection {...info} />);
-    screen.getByText(info.username);
+    screen.getByText(info.user.username);
     screen.getByText(info.content);
     screen.getByText(info.createdAt);
   });
   it.concurrent('should render the right user image', () => {
     const info = {
-      username: 'test',
+      user: {
+        image: {
+          png: 'src/images/avatars/image-maxblagun.png',
+          webp: 'src/images/avatars/image-maxblagun.webp',
+        },
+        username: 'maxblagun',
+      },
       content: 'hello world',
       createdAt: '1 month ago',
-      image: './images/avatars/image-ramsesmiron.png',
     };
 
     render(<CommentSection {...info} />);
     const image = screen.getByRole('img') as HTMLImageElement;
-    expect(image.src).toBe(info.image);
+    expect(image.src).toBe(info.user.image.png);
   });
   it.concurrent('should render the given score', () => {
     const info = {

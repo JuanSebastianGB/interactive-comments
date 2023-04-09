@@ -1,6 +1,5 @@
 import './App.css';
-import { AddComment } from './components';
-import { CommentSection } from './components/CommentSection';
+import { AddComment, CommentsList } from './components';
 import data from './data.json';
 import { Container } from './styled-components';
 
@@ -15,9 +14,7 @@ const info = {
 function App() {
   return (
     <Container data-testid="comments-section">
-      <CommentSection {...info} />
-      <CommentSection {...info} />
-      <CommentSection {...info} />
+      <CommentsList {...data} />
       <AddComment data={data} />
     </Container>
   );

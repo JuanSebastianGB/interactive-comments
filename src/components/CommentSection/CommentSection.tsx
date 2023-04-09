@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Comment } from '../../models';
 import { Reply } from '../icons';
-export interface CommentSectionProps {
-  username: string;
-  content: string;
-  createdAt: string;
-  image: string;
-  score: number;
-}
+export interface CommentSectionProps extends Comment {}
 
 const CommentSection: React.FC<CommentSectionProps> = ({
-  username,
+  user,
   content,
   createdAt,
-  image,
   score,
 }) => {
   const handleDecrement = () => {
@@ -24,12 +18,15 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   };
   const [actualScore, setActualScore] = useState(score ?? 0);
   return (
-    <CommentSectionStyle>
+    <CommentSectionStyle data-testid="list-element">
       <div className="header">
         <figure>
-          <img src={image} alt={'person image'} />
+          <img
+            src={user?.image?.png.replace('./', 'src/')}
+            alt={'person image'}
+          />
         </figure>
-        <div className="username">{username}</div>
+        <div className="username">{user?.username}</div>
         <span>{createdAt}</span>
       </div>
       <p className="content">{content}</p>

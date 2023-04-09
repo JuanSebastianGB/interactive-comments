@@ -73,6 +73,10 @@ export const AddCommentStyle = styled.div`
     padding: 0.5rem 1.6rem;
     border-radius: 10px;
     font-size: 1rem;
+    border: none;
+    &:hover {
+      cursor: pointer;
+    }
   }
   background-color: var(--clr-white);
   border-radius: 1rem;
