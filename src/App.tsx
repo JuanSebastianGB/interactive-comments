@@ -10,6 +10,7 @@ const info = {
   image: './src/assets/avatars/image-ramsesmiron.png',
   score: 1,
 };
+
 function App() {
   return (
     <div className="App">
