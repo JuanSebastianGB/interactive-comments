@@ -1,7 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
 *,
 ::before,
 ::after {
   box-sizing: border-box;
+}
+
+* {
   margin: 0;
-  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+:root {
+  font-family: 'Rubik', sans-serif;
+  font-size: 16px;
+  /* primary */
+  --clr-blue: hsl(238, 40%, 52%);
+  --clr-red: hsl(358, 79%, 66%);
+  --clr-bottom: #f5f6fa;
+  --clr-red-light: hsl(357, 100%, 86%);
+
+  /* neutral */
+
+  --clr-dark: hsl(212, 24%, 26%);
+  --clr-gray: #7f8790;
+  --clr-gray-light: #c4c5f3;
+  --clr-more-light: hsl(228, 33%, 97%);
+  --clr-white: hsl(0, 0%, 100%);
+}
+
+body {
+  background-color: var(--clr-more-light);
 }
