@@ -18,6 +18,7 @@ const AddComment: React.FC<AddCommentProps> = ({ data, submit }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (submit) submit({ textArea });
+    setDisabled(true);
     setTextArea('');
   };
   return (

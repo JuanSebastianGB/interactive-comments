@@ -91,6 +91,7 @@ describe('AddComment', () => {
       /Add a comment.../
     ) as HTMLTextAreaElement;
     fireEvent.change(textArea, { target: { value: 'hello world' } });
-    expect(button.hasAttribute('disabled')).toBe(false);
+    fireEvent.click(button);
+    expect(button.hasAttribute('disabled')).toBe(true);
   });
 });

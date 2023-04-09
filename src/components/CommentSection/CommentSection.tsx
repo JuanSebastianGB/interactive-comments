@@ -24,7 +24,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   };
   const [actualScore, setActualScore] = useState(score ?? 0);
   return (
-    <CommentSectionStyle className="comment">
+    <CommentSectionStyle>
       <div className="header">
         <figure>
           <img src={image} alt={'person image'} />
@@ -49,6 +49,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 };
 
 export const CommentSectionStyle = styled.div`
+  display: grid;
   background-color: var(--clr-white);
   border-radius: 1rem;
   padding: 1.2rem;
@@ -110,6 +111,15 @@ export const CommentSectionStyle = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  @media (min-width: 400px) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    .control {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+    }
   }
 `;
 
