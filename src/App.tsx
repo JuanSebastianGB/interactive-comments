@@ -2,6 +2,7 @@ import './App.css';
 import { AddComment } from './components';
 import { CommentSection } from './components/CommentSection';
 import data from './data.json';
+import { Container } from './styled-components';
 
 const info = {
   username: 'ramsesmiron',
@@ -13,11 +14,12 @@ const info = {
 
 function App() {
   return (
-    <div className="App">
-      <h1>Comments</h1>
+    <Container data-testid="comments-section">
+      <CommentSection {...info} />
+      <CommentSection {...info} />
       <CommentSection {...info} />
       <AddComment data={data} />
-    </div>
+    </Container>
   );
 }
 

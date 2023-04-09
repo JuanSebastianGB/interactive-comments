@@ -96,6 +96,7 @@ export const CommentSectionStyle = styled.div`
       background-color: inherit;
       border: none;
       font-size: 1.3rem;
+      cursor: pointer;
     }
     & > span {
       color: var(--clr-blue);
@@ -110,6 +111,7 @@ export const CommentSectionStyle = styled.div`
     display: flex;
     align-items: center;
     gap: 0.6rem;
+    cursor: pointer;
   }
   .section {
     display: flex;
