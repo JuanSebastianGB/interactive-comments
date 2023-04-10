@@ -2,13 +2,27 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Comment } from '../../models';
 import { Reply } from '../icons';
-export interface CommentSectionProps extends Comment {}
+export interface CommentSectionProps extends Comment {
+  isReply?: boolean;
+}
+
+const ContainerReply = styled.div`
+  border-left: 1px solid var(--clr-gray-light);
+  /* width: 92%; */
+  margin-left: 4rem;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
 
 const CommentSection: React.FC<CommentSectionProps> = ({
   user,
   content,
   createdAt,
   score,
+  replies,
+  isReply,
 }) => {
   const handleDecrement = () => {
     setActualScore((prev) => (prev === 0 ? 0 : prev - 1));
@@ -18,32 +32,51 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   };
   const [actualScore, setActualScore] = useState(score ?? 0);
   return (
-    <CommentSectionStyle data-testid="list-element">
-      <div className="header">
-        <figure>
-          <img
-            src={user?.image?.png.replace('./', 'src/')}
-            alt={'person image'}
-          />
-        </figure>
-        <div className="username">{user?.username}</div>
-        <span>{createdAt}</span>
-      </div>
-      <p className="content">{content}</p>
-      <div className="control">
-        <button onClick={handleIncrement}>+</button>
-        <span data-testid="comment-score">{actualScore}</span>
-        <button onClick={handleDecrement}>-</button>
-      </div>
-      <div className="reply">
-        <Reply />
-        <span>Reply</span>
-      </div>
-    </CommentSectionStyle>
+    <>
+      <CommentSectionStyle
+        data-testid={'list-element'}
+        role={`${isReply ? 'cell' : ''}`}
+        className={isReply ? 'is-reply' : ''}
+      >
+        <div className="header">
+          <figure>
+            <img
+              src={user?.image?.png.replace('./', 'src/')}
+              alt={'person image'}
+            />
+          </figure>
+          <div className="username">{user?.username}</div>
+          <span>{createdAt}</span>
+        </div>
+        <p className="content">{content}</p>
+        <div className="control">
+          <button onClick={handleIncrement}>+</button>
+          <span data-testid="comment-score">{actualScore}</span>
+          <button onClick={handleDecrement}>-</button>
+        </div>
+        <div className="reply">
+          <Reply />
+          <span>Reply</span>
+        </div>
+      </CommentSectionStyle>
+
+      {replies?.length ? (
+        <ContainerReply>
+          {replies.map((reply) => (
+            <div key={reply.id} style={{ position: 'relative' }}>
+              <CommentSection isReply {...reply} />
+            </div>
+          ))}
+        </ContainerReply>
+      ) : null}
+    </>
   );
 };
 
 export const CommentSectionStyle = styled.div`
+  &.is-reply {
+    margin-left: 2rem;
+  }
   display: grid;
   grid-template-columns: 65px repeat(6, 1fr);
   background-color: var(--clr-white);
@@ -52,6 +85,7 @@ export const CommentSectionStyle = styled.div`
   font-size: 1.2rem;
   max-width: 100%;
   margin: 0 auto;
+
   .header {
     grid-column: 1 / 8;
     grid-row: 1 / 2;
@@ -109,6 +143,7 @@ export const CommentSectionStyle = styled.div`
     align-items: center;
     gap: 0.6rem;
     cursor: pointer;
+    display: flex;
   }
   .section {
     display: flex;
@@ -120,7 +155,7 @@ export const CommentSectionStyle = styled.div`
     font-weight: 700;
   }
 
-  @media (min-width: 650px) {
+  @media (min-width: 750px) {
     .header {
       grid-column: 2 / 7;
       grid-row: 1 / 2;
