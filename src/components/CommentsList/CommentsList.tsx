@@ -12,9 +12,7 @@ const CommentsList: React.FC<CommentsListProps> = ({ comments }) => {
   return (
     <CommentsListStyle>
       {!!data ? (
-        data.map((comment, idx) => (
-          <CommentSection key={random()} {...comment} />
-        ))
+        data.map((comment) => <CommentSection key={random()} {...comment} />)
       ) : (
         <span>No comments</span>
       )}
