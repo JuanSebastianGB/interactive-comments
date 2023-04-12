@@ -1,4 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { UserContext } from '../../context';
 import { apiResponse } from '../mocks';
 import CommentSection from './CommentSection';
 
@@ -125,6 +126,35 @@ describe('CommentSection', () => {
     () => {
       render(<CommentSection {...apiResponse.comments[1]} />);
       expect(screen.getAllByRole('cell')).toHaveLength(2);
+    }
+  );
+  it.todo(
+    'if is a reply of the user should show Edit and Delete buttons',
+    () => {
+      cleanup();
+      const mock = {
+        id: 4,
+        content:
+          "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
+        createdAt: '2 days ago',
+        score: 2,
+        replyingTo: 'ramsesmiron',
+        user: {
+          image: {
+            png: './images/avatars/image-juliusomo.png',
+            webp: './images/avatars/image-juliusomo.webp',
+          },
+          username: 'juliusomo',
+        },
+      };
+      render(
+        <UserContext.Provider value={{ currentUser: mock }}>
+          <CommentSection isReply {...mock} />
+        </UserContext.Provider>
+      );
+      screen.debug();
+      screen.getByText(/edit/i);
+      screen.getByText(/delete/i);
     }
   );
 });

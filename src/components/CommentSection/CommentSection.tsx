@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useUserContext } from '../../context';
 import { Comment } from '../../models';
-import { Reply } from '../icons';
+import { CommentSectionButtons } from './CommentSectionButtons';
 export interface CommentSectionProps extends Comment {
   isReply?: boolean;
 }
@@ -31,6 +32,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     setActualScore((prev) => prev + 1);
   };
   const [actualScore, setActualScore] = useState(score ?? 0);
+  const { currentUser } = useUserContext();
+  const isDifferent = currentUser?.username !== user?.username;
+
   return (
     <>
       <CommentSectionStyle
@@ -54,12 +58,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           <span data-testid="comment-score">{actualScore}</span>
           <button onClick={handleDecrement}>-</button>
         </div>
-        <div className="reply">
-          <Reply />
-          <span>Reply</span>
-        </div>
+        <CommentSectionButtons
+          isDifferentUser={isDifferent}
+          isReply={Boolean(isReply)}
+        />
       </CommentSectionStyle>
-
       {replies?.length ? (
         <ContainerReply>
           {replies.map((reply) => (
@@ -79,7 +82,8 @@ export const CommentSectionStyle = styled.div`
   }
   display: grid;
   grid-template-columns: 65px repeat(6, 1fr);
-  background-color: var(--clr-white);
+
+  /* background-color: var(--clr-white); */
   border-radius: 1rem;
   padding: 1.2rem;
   font-size: 1.2rem;
@@ -134,17 +138,7 @@ export const CommentSectionStyle = styled.div`
       font-weight: 700;
     }
   }
-  .reply {
-    grid-column: 6 / 8;
-    grid-row: 3 / 4;
-    color: var(--clr-blue);
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    cursor: pointer;
-    display: flex;
-  }
+
   .section {
     display: flex;
     align-items: center;
@@ -157,7 +151,7 @@ export const CommentSectionStyle = styled.div`
 
   @media (min-width: 750px) {
     .header {
-      grid-column: 2 / 7;
+      grid-column: 2 / 6;
       grid-row: 1 / 2;
     }
     .content {
@@ -165,7 +159,7 @@ export const CommentSectionStyle = styled.div`
       grid-row: 2 / 3;
     }
     .reply {
-      grid-column: 7 / 8;
+      grid-column: 6 / 8;
       grid-row: 1/ 2;
     }
     .control {

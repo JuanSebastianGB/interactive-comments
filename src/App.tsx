@@ -1,5 +1,6 @@
 import './App.css';
 import { AddComment, CommentsList } from './components';
+import { UserProvider } from './context';
 import data from './data.json';
 import { Container } from './styled-components';
 
@@ -13,10 +14,12 @@ const info = {
 
 function App() {
   return (
-    <Container data-testid="comments-section">
-      <CommentsList {...data} />
-      <AddComment data={data} />
-    </Container>
+    <UserProvider>
+      <Container data-testid="comments-section">
+        <CommentsList {...data} />
+        <AddComment data={data} />
+      </Container>
+    </UserProvider>
   );
 }
 
