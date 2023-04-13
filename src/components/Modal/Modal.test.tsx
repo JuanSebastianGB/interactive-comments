@@ -3,6 +3,7 @@ import { vi } from 'vitest';
 import Modal from './Modal';
 
 describe('Modal', () => {
+  afterEach(cleanup);
   beforeEach(() => {
     const modalRoot = document.createElement('div');
     modalRoot.setAttribute('id', 'modal-root');
@@ -12,7 +13,7 @@ describe('Modal', () => {
   });
   afterEach(cleanup);
   it.concurrent('Modal should render', () => {
-    screen.getByText(/Delete component/i);
+    screen.getByText(/Delete comment/i);
     screen.getByText(/no, cancel/i);
     screen.getByText(/yes, delete/i);
   });
@@ -24,8 +25,8 @@ describe('Modal', () => {
     screen.getByRole('button', { name: /x/i });
   });
   it.concurrent('should be call close function when x button is called', () => {
-    const mock = vi.fn();
     cleanup();
+    const mock = vi.fn();
     const modalRoot = document.createElement('div');
     modalRoot.setAttribute('id', 'modal-root');
     document.body.appendChild(modalRoot);
@@ -39,8 +40,8 @@ describe('Modal', () => {
     expect(mock).toBeCalledTimes(1);
   });
   it.concurrent('should be call close when cancel button is called', () => {
-    const mock = vi.fn();
     cleanup();
+    const mock = vi.fn();
     const modalRoot = document.createElement('div');
     modalRoot.setAttribute('id', 'modal-root');
     document.body.appendChild(modalRoot);

@@ -61,7 +61,7 @@ describe('modal actions', () => {
       const button = screen.getByTestId('open-modal-delete-comment');
       fireEvent.click(button);
       screen.getByRole('dialog');
-      screen.getByText(/Delete component/i);
+      screen.getByText(/Delete comment/i);
       screen.getByText(/Yes, delete/i);
     }
   );
