@@ -82,8 +82,6 @@ export const CommentSectionStyle = styled.div`
   }
   display: grid;
   grid-template-columns: 65px repeat(6, 1fr);
-
-  /* background-color: var(--clr-white); */
   border-radius: 1rem;
   padding: 1.2rem;
   font-size: 1.2rem;

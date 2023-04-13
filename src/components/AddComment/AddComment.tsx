@@ -59,7 +59,7 @@ export const AddCommentStyle = styled.div`
     }
     &::placeholder {
       color: var(--clr-gray);
-      font-size: 1.2rem;
+      font-size: 1rem;
     }
   }
   img {

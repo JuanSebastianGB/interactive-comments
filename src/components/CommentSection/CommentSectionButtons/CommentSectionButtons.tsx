@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Modal } from '../../Modal';
 import { Reply } from '../../icons';
 import Delete from '../../icons/Delete';
 import Edit from '../../icons/Edit';
 export interface CommentSectionButtonsProps {
   isReply?: boolean;
   isDifferentUser?: boolean;
+  openModal: Function;
 }
 
 const CommentSectionButtons: React.FC<CommentSectionButtonsProps> = ({
   isReply,
   isDifferentUser,
+  openModal,
 }) => {
   if (!isReply || (isDifferentUser && isReply))
     return (
@@ -26,7 +29,12 @@ const CommentSectionButtons: React.FC<CommentSectionButtonsProps> = ({
           <Edit />
           <span>Edit</span>
         </div>
-        <div role="button" className="btn btn-delete">
+        <div
+          role="button"
+          className="btn btn-delete"
+          data-testid="open-modal-delete-comment"
+          onClick={() => openModal()}
+        >
           <Delete />
           <span>Delete</span>
         </div>
@@ -40,10 +48,13 @@ const commentSectionButtonsWithStyle = (Component: {
 }) => {
   // @ts-ignore
   const WrappedComponent = (props) => {
+    const [openModal, setOpenModal] = useState(false);
+
     return (
       <CommentSectionButtonsStyle className="reply">
         {/* @ts-ignore */}
-        <Component {...props} />
+        <Component {...props} openModal={() => setOpenModal(true)} />
+        {openModal ? <Modal close={() => setOpenModal(false)} /> : null}
       </CommentSectionButtonsStyle>
     );
   };
