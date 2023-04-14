@@ -54,4 +54,19 @@ describe('Modal', () => {
     expect(mock).toBeCalled();
     expect(mock).toBeCalledTimes(1);
   });
+  it.concurrent('should be call close when delete button is called', () => {
+    cleanup();
+    const mock = vi.fn();
+    const modalRoot = document.createElement('div');
+    modalRoot.setAttribute('id', 'modal-root');
+    document.body.appendChild(modalRoot);
+
+    render(<Modal close={mock} />);
+
+    const deleteButton = screen.getByRole('button', { name: /yes, delete/i });
+    fireEvent.click(deleteButton);
+
+    expect(mock).toBeCalled();
+    expect(mock).toBeCalledTimes(1);
+  });
 });

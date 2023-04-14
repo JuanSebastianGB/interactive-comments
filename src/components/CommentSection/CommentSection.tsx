@@ -2,20 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useUserContext } from '../../context';
 import { Comment } from '../../models';
+import { ReplyList } from '../ReplyList';
 import { CommentSectionButtons } from './CommentSectionButtons';
 export interface CommentSectionProps extends Comment {
   isReply?: boolean;
 }
-
-const ContainerReply = styled.div`
-  border-left: 1px solid var(--clr-gray-light);
-  /* width: 92%; */
-  margin-left: 4rem;
-  padding-left: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-`;
 
 const CommentSection: React.FC<CommentSectionProps> = ({
   user,
@@ -32,8 +23,8 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     setActualScore((prev) => prev + 1);
   };
   const [actualScore, setActualScore] = useState(score ?? 0);
-  const { currentUser } = useUserContext();
-  const isDifferent = currentUser?.username !== user?.username;
+  const { apiState } = useUserContext();
+  const isDifferent = apiState.currentUser?.username !== user?.username;
 
   return (
     <>
@@ -63,15 +54,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           isReply={Boolean(isReply)}
         />
       </CommentSectionStyle>
-      {replies?.length ? (
-        <ContainerReply>
-          {replies.map((reply) => (
-            <div key={reply.id} style={{ position: 'relative' }}>
-              <CommentSection isReply {...reply} />
-            </div>
-          ))}
-        </ContainerReply>
-      ) : null}
+      {replies?.length ? <ReplyList replies={replies} /> : null}
     </>
   );
 };
@@ -87,6 +70,7 @@ export const CommentSectionStyle = styled.div`
   font-size: 1.2rem;
   max-width: 100%;
   margin: 0 auto;
+  background-color: var(--clr-white);
 
   .header {
     grid-column: 1 / 8;

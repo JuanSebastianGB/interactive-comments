@@ -1,22 +1,42 @@
-import { createContext, useContext, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from 'react';
 import { apiResponse } from '../components/mocks';
-import { CurrentUser } from '../models';
+import { Comment, CurrentUser } from '../models';
 
-interface ContextInterface {
+interface ApiState {
   currentUser: CurrentUser;
+  comments: Comment[];
 }
-export const UserContext = createContext<ContextInterface>(
-  {} as ContextInterface
-);
+
+interface UserContextType {
+  apiState: ApiState;
+  setApiState: Dispatch<SetStateAction<ApiState>>;
+}
+
+export const UserContext = createContext<UserContextType>({
+  apiState: {
+    comments: [],
+    currentUser: { image: { png: '', webp: '' }, username: '' },
+  },
+  setApiState: () => {},
+});
 
 interface Props {
   children: React.ReactNode;
 }
 
 export const UserProvider: React.FC<Props> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(apiResponse.currentUser);
+  const [apiState, setApiState] = useState<ApiState>(() => ({
+    comments: apiResponse.comments,
+    currentUser: apiResponse.currentUser,
+  }));
   return (
-    <UserContext.Provider value={{ currentUser }}>
+    <UserContext.Provider value={{ apiState, setApiState }}>
       {children}
     </UserContext.Provider>
   );

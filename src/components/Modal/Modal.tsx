@@ -28,7 +28,9 @@ const Modal: React.FC<ModalProps> = ({ close }) => {
           <button className="btn btn-cancel" onClick={() => close()}>
             No, cancel
           </button>
-          <button className="btn btn-delete">Yes, delete</button>
+          <button className="btn btn-delete" onClick={() => close()}>
+            Yes, delete
+          </button>
         </div>
       </div>
     </ModalStyle>,

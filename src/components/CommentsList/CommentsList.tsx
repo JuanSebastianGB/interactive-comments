@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { v4 as random } from 'uuid';
+import { useUserContext } from '../../context';
 import { Comment } from '../../models';
 import { CommentSection } from '../CommentSection';
 export interface CommentsListProps {
@@ -8,9 +9,11 @@ export interface CommentsListProps {
 }
 
 const CommentsList: React.FC<CommentsListProps> = ({ comments }) => {
-  const [data, setData] = useState(comments);
-  const renderedComments = !!data ? (
-    data.map((comment) => <CommentSection key={random()} {...comment} />)
+  const { apiState } = useUserContext();
+  const renderedComments = !!apiState?.comments ? (
+    apiState?.comments.map((comment) => (
+      <CommentSection key={random()} {...comment} />
+    ))
   ) : (
     <span>No comments</span>
   );

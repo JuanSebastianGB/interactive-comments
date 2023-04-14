@@ -65,4 +65,22 @@ describe('modal actions', () => {
       screen.getByText(/Yes, delete/i);
     }
   );
+  it.concurrent('should close modal when delete button is clicked', () => {
+    cleanup();
+    const modalRoot = document.createElement('div');
+    modalRoot.setAttribute('id', 'modal-root');
+    document.body.appendChild(modalRoot);
+
+    render(<CommentSectionButtons isReply={true} isDifferentUser={false} />);
+    const openButtonModal = screen.getByTestId('open-modal-delete-comment');
+
+    fireEvent.click(openButtonModal);
+
+    const buttonDeleteComment = screen.getByText(/Yes, delete/i);
+    fireEvent.click(buttonDeleteComment);
+
+    expect(screen.queryByText(/Delete comment/i)).toBeNull();
+    expect(screen.queryByText(/Yes, delete/i)).toBeNull();
+    expect(screen.queryByText(/No, cancel/i)).toBeNull();
+  });
 });
