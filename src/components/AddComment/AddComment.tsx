@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useUserContext } from '../../context';
+import { timeSince } from '../../helpers/date.helper';
 import { UserComments } from '../../models';
 import { FlexRow } from '../../styled-components';
+import { type } from '../../types/type';
 export interface AddCommentProps {
   data: UserComments;
   submit?: Function;
@@ -12,6 +14,7 @@ const AddComment: React.FC<AddCommentProps> = ({ data, submit }) => {
   const { apiState } = useUserContext();
   const [textArea, setTextArea] = useState('');
   const [disabled, setDisabled] = useState(true);
+  const { dispatch } = useUserContext();
   const handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const currentTextArea = e.target.value;
     if (currentTextArea.length > 4) setDisabled(false);
@@ -21,6 +24,17 @@ const AddComment: React.FC<AddCommentProps> = ({ data, submit }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (submit) submit({ textArea });
+    dispatch({
+      type: type.ADD_COMMENT,
+      payload: {
+        content: textArea,
+        id: 100,
+        user: apiState.currentUser,
+        score: 0,
+        replies: [],
+        createdAt: timeSince(new Date()),
+      },
+    });
     setDisabled(true);
     setTextArea('');
   };

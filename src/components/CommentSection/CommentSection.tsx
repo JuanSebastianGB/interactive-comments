@@ -70,7 +70,8 @@ export const CommentSectionStyle = styled.div`
   border-radius: 1rem;
   padding: 1.2rem;
   font-size: 1.2rem;
-  max-width: 100%;
+  /* max-width: 100%; */
+  min-width: 100%;
   margin: 0 auto;
   background-color: var(--clr-white);
 

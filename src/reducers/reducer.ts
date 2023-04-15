@@ -33,6 +33,11 @@ export const reducer = (state: UserComments, action: ActionType) => {
             [],
         })),
       };
+    case type.ADD_COMMENT:
+      return {
+        ...state,
+        comments: [...state.comments, action.payload],
+      };
 
     default:
       return state;
