@@ -5,16 +5,18 @@ import { Reply } from '../../icons';
 import Delete from '../../icons/Delete';
 import Edit from '../../icons/Edit';
 export interface CommentSectionButtonsProps {
-  isReply?: boolean;
   isSameUser?: boolean;
   openModal: Function;
   id: number;
+  toggleReplyAction: React.MouseEventHandler<HTMLButtonElement>;
+  isReplyAction: boolean;
 }
 
 const CommentSectionButtons: React.FC<CommentSectionButtonsProps> = ({
   isSameUser,
   openModal,
-  id,
+  toggleReplyAction,
+  isReplyAction,
 }) => {
   if (isSameUser)
     return (
@@ -37,10 +39,12 @@ const CommentSectionButtons: React.FC<CommentSectionButtonsProps> = ({
       </>
     );
   return (
-    <>
+    <div className="btn btn-reply">
       <Reply />
-      <span role="button">Reply </span>
-    </>
+      <button disabled={isReplyAction} onClick={toggleReplyAction}>
+        Reply
+      </button>
+    </div>
   );
 };
 
@@ -88,6 +92,18 @@ export const CommentSectionButtonsStyle = styled.div`
     align-items: center;
     gap: 0.5rem;
     font-size: 1rem;
+  }
+
+  .btn-reply button {
+    background-color: inherit;
+    border: none;
+    color: var(--clr-blue);
+    font-weight: 700;
+    cursor: pointer;
+    &:disabled {
+      color: var(--clr-gray-light);
+      cursor: not-allowed;
+    }
   }
 
   .btn-edit {

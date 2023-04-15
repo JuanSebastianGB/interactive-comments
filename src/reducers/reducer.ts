@@ -39,6 +39,24 @@ export const reducer = (state: UserComments, action: ActionType) => {
         comments: [...state.comments, action.payload],
       };
 
+    case type.ADD_REPLY:
+      const { commentId, ...newReply } = action.payload;
+      const updatedComments = state.comments.map((comment) => {
+        if (comment.id === commentId) {
+          return {
+            ...comment,
+            replies: comment.replies
+              ? [...comment.replies, newReply]
+              : [newReply],
+          };
+        }
+        return comment;
+      });
+      return {
+        ...state,
+        comments: updatedComments,
+      };
+
     default:
       return state;
   }

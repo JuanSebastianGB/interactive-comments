@@ -2,19 +2,27 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useUserContext } from '../../context';
 import { timeSince } from '../../helpers/date.helper';
-import { UserComments } from '../../models';
+import { User } from '../../models';
 import { FlexRow } from '../../styled-components';
 import { type } from '../../types/type';
 export interface AddCommentProps {
-  data: UserComments;
   submit?: Function;
+  isReplyAction?: boolean;
+  toggleReplyAction?: Function;
+  id: number;
+  user: User;
 }
 
-const AddComment: React.FC<AddCommentProps> = ({ data, submit }) => {
-  const { apiState } = useUserContext();
+const AddComment: React.FC<AddCommentProps> = ({
+  submit,
+  isReplyAction,
+  toggleReplyAction,
+  id: commentId,
+  user,
+}) => {
+  const { apiState, dispatch } = useUserContext();
   const [textArea, setTextArea] = useState('');
   const [disabled, setDisabled] = useState(true);
-  const { dispatch } = useUserContext();
   const handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const currentTextArea = e.target.value;
     if (currentTextArea.length > 4) setDisabled(false);
@@ -24,17 +32,35 @@ const AddComment: React.FC<AddCommentProps> = ({ data, submit }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (submit) submit({ textArea });
-    dispatch({
-      type: type.ADD_COMMENT,
-      payload: {
-        content: textArea,
-        id: 100,
-        user: apiState.currentUser,
-        score: 0,
-        replies: [],
-        createdAt: timeSince(new Date()),
-      },
-    });
+
+    if (!isReplyAction)
+      dispatch({
+        type: type.ADD_COMMENT,
+        payload: {
+          content: textArea,
+          id: apiState.comments.length + 1,
+          user: apiState.currentUser,
+          score: 0,
+          replies: [],
+          createdAt: timeSince(new Date()),
+        },
+      });
+    else
+      dispatch({
+        type: type.ADD_REPLY,
+        payload: {
+          commentId,
+          content: textArea,
+          score: 0,
+          createdAt: timeSince(new Date()),
+          user: apiState.currentUser,
+          replyInto: apiState.currentUser.username,
+          id:
+            (apiState?.comments?.find((c) => c.id === commentId)?.replies
+              ?.length ?? 1000) + 1,
+        },
+      });
+    toggleReplyAction && toggleReplyAction();
     setDisabled(true);
     setTextArea('');
   };
@@ -43,7 +69,7 @@ const AddComment: React.FC<AddCommentProps> = ({ data, submit }) => {
       <form aria-label="form" onSubmit={handleSubmit}>
         <textarea
           name="textArea"
-          placeholder="Add a comment..."
+          placeholder={isReplyAction ? 'Add a reply' : 'Add a comment...'}
           onChange={handleChangeTextArea}
           value={textArea}
         />
@@ -52,7 +78,9 @@ const AddComment: React.FC<AddCommentProps> = ({ data, submit }) => {
             src={apiState?.currentUser?.image?.png.replace('.', 'src')}
             alt="user image"
           />
-          <button disabled={disabled}>send</button>
+          <button disabled={disabled}>
+            {isReplyAction ? 'REPLY' : 'SEND'}
+          </button>
         </FlexRow>
       </form>
     </AddCommentStyle>

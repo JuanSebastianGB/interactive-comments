@@ -1,4 +1,10 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from '@testing-library/react';
 import { UserContext } from '../../context';
 import { apiResponse } from '../mocks';
 import CommentSection from './CommentSection';
@@ -174,5 +180,70 @@ describe('CommentSection', () => {
       </UserContext.Provider>
     );
     screen.getByText(/YOU/i);
+  });
+  it.concurrent('should disable reply button when clicked', () => {
+    const info = {
+      id: 1,
+      content:
+        "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
+      createdAt: '1 month ago',
+      score: 12,
+      user: {
+        image: {
+          png: './images/avatars/image-amyrobson.png',
+          webp: './images/avatars/image-amyrobson.webp',
+        },
+        username: 'amyrobson',
+      },
+      replies: [],
+    };
+    render(<CommentSection {...info} />);
+    let replyButton = screen.getByText(/reply/i);
+    fireEvent.click(replyButton);
+    expect(replyButton.hasAttribute('disabled')).toBe(true);
+  });
+  it.concurrent('should appear add a reply text', () => {
+    const info = {
+      id: 1,
+      content:
+        "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
+      createdAt: '1 month ago',
+      score: 12,
+      user: {
+        image: {
+          png: './images/avatars/image-amyrobson.png',
+          webp: './images/avatars/image-amyrobson.webp',
+        },
+        username: 'amyrobson',
+      },
+      replies: [],
+    };
+    render(<CommentSection {...info} />);
+    let replyButton = screen.getByText(/reply/i);
+    fireEvent.click(replyButton);
+    screen.getByPlaceholderText(/add a reply/i);
+  });
+
+  it.concurrent('should appear apply button if is a reply action', () => {
+    const info = {
+      id: 1,
+      content:
+        "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
+      createdAt: '1 month ago',
+      score: 12,
+      user: {
+        image: {
+          png: './images/avatars/image-amyrobson.png',
+          webp: './images/avatars/image-amyrobson.webp',
+        },
+        username: 'amyrobson',
+      },
+      replies: [],
+    };
+    render(<CommentSection {...info} />);
+    let replyButton = screen.getByText(/reply/i);
+    fireEvent.click(replyButton);
+    const form = screen.getByRole('form');
+    within(form).getByText(/reply/i);
   });
 });

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useUserContext } from '../../context';
 import { Comment } from '../../models';
+import { AddComment } from '../AddComment';
 import { ReplyList } from '../ReplyList';
 import { CommentSectionButtons } from './CommentSectionButtons';
 export interface CommentSectionProps extends Comment {
@@ -28,7 +29,8 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   const [actualScore, setActualScore] = useState(score ?? 0);
   const { apiState } = useUserContext();
   const isDifferent = apiState.currentUser?.username !== user?.username;
-
+  const [isReplyAction, setIsReplyAction] = useState(false);
+  const toggleReplyAction = () => setIsReplyAction((prev) => !prev);
   return (
     <>
       <CommentSectionStyle
@@ -62,8 +64,19 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           isSameUser={!isDifferent}
           isReply={Boolean(isReply)}
           id={id}
+          toggleReplyAction={toggleReplyAction}
+          isReplyAction={isReplyAction}
         />
       </CommentSectionStyle>
+      {isReplyAction && (
+        <AddComment
+          isReplyAction={isReplyAction}
+          toggleReplyAction={toggleReplyAction}
+          id={id}
+          user={user}
+        />
+      )}
+
       {replies?.length ? <ReplyList replies={replies} /> : null}
     </>
   );
@@ -78,7 +91,6 @@ export const CommentSectionStyle = styled.div`
   border-radius: 1rem;
   padding: 1.2rem;
   font-size: 1.2rem;
-  /* max-width: 100%; */
   min-width: 100%;
   margin: 0 auto;
   background-color: var(--clr-white);
