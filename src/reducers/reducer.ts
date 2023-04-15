@@ -23,6 +23,17 @@ export const reducer = (state: UserComments, action: ActionType) => {
         ...state,
         comments: [],
       };
+    case type.DELETE_REPLY:
+      return {
+        ...state,
+        comments: state.comments.map((comment) => ({
+          ...comment,
+          replies:
+            comment.replies?.filter((reply) => reply.id !== action.payload) ??
+            [],
+        })),
+      };
+
     default:
       return state;
   }

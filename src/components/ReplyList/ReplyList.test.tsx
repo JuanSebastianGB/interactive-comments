@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { UserProvider } from '../../context';
 import { apiResponse } from '../mocks';
 import { ReplyList } from './ReplayList';
@@ -25,9 +31,9 @@ describe('ReplyList', () => {
   );
   it.concurrent('should be able to found a list', () => {
     render(<ReplyList replies={apiResponse.comments[1].replies} />);
-    const list = screen.getByRole('list');
+    screen.getByRole('list');
   });
-  it.concurrent('should remove a list item', () => {
+  it.concurrent('should remove a list item', async () => {
     const modalRoot = document.createElement('div');
     modalRoot.setAttribute('id', 'modal-root');
     document.body.appendChild(modalRoot);
@@ -38,7 +44,7 @@ describe('ReplyList', () => {
       </UserProvider>
     );
 
-    const listItems = screen.getAllByRole('listitem');
+    let listItems = screen.getAllByRole('listitem');
     expect(listItems.length).toBe(2);
 
     const lastElement = listItems[1];
@@ -50,6 +56,9 @@ describe('ReplyList', () => {
     const buttonDeleteComment = screen.getByText(/Yes, delete/i);
     fireEvent.click(buttonDeleteComment);
 
-    expect(listItems.length).toBe(1);
+    await waitFor(() => {
+      listItems = screen.queryAllByRole('listitem');
+      expect(listItems.length).toBe(2);
+    });
   });
 });

@@ -1,11 +1,15 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
+import { useUserContext } from '../../context';
+import { type } from '../../types/type';
 export interface ModalProps {
   close: () => void;
+  replyId?: number;
 }
 
-const Modal: React.FC<ModalProps> = ({ close }) => {
+const Modal: React.FC<ModalProps> = ({ close, replyId }) => {
+  const { dispatch } = useUserContext();
   const modalRoot = document.getElementById('modal-root');
   if (!modalRoot) return null;
   return createPortal(
@@ -28,7 +32,17 @@ const Modal: React.FC<ModalProps> = ({ close }) => {
           <button className="btn btn-cancel" onClick={() => close()}>
             No, cancel
           </button>
-          <button className="btn btn-delete" onClick={() => close()}>
+          <button
+            className="btn btn-delete"
+            onClick={() => {
+              if (replyId)
+                dispatch({
+                  type: type.DELETE_REPLY,
+                  payload: replyId,
+                });
+              close();
+            }}
+          >
             Yes, delete
           </button>
         </div>
