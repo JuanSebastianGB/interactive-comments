@@ -1,29 +1,11 @@
-import {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useContext,
-  useState,
-} from 'react';
-import { apiResponse } from '../components/mocks';
-import { Comment, CurrentUser } from '../models';
-
-interface ApiState {
-  currentUser: CurrentUser;
-  comments: Comment[];
-}
-
-interface UserContextType {
-  apiState: ApiState;
-  setApiState: Dispatch<SetStateAction<ApiState>>;
-}
+import { createContext, useContext, useReducer } from 'react';
+import { apiResponse } from '../components';
+import { UserContextType } from '../models/context.model';
+import { initialState, reducer } from '../reducers/reducer';
 
 export const UserContext = createContext<UserContextType>({
-  apiState: {
-    comments: [],
-    currentUser: { image: { png: '', webp: '' }, username: '' },
-  },
-  setApiState: () => {},
+  apiState: initialState,
+  dispatch: () => {},
 });
 
 interface Props {
@@ -31,12 +13,9 @@ interface Props {
 }
 
 export const UserProvider: React.FC<Props> = ({ children }) => {
-  const [apiState, setApiState] = useState<ApiState>(() => ({
-    comments: apiResponse.comments,
-    currentUser: apiResponse.currentUser,
-  }));
+  const [apiState, dispatch] = useReducer(reducer, apiResponse);
   return (
-    <UserContext.Provider value={{ apiState, setApiState }}>
+    <UserContext.Provider value={{ apiState, dispatch }}>
       {children}
     </UserContext.Provider>
   );

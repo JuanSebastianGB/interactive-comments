@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useUserContext } from '../../context';
 import { UserComments } from '../../models';
 import { FlexRow } from '../../styled-components';
 export interface AddCommentProps {
@@ -8,6 +9,7 @@ export interface AddCommentProps {
 }
 
 const AddComment: React.FC<AddCommentProps> = ({ data, submit }) => {
+  const { apiState } = useUserContext();
   const [textArea, setTextArea] = useState('');
   const [disabled, setDisabled] = useState(true);
   const handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -33,7 +35,7 @@ const AddComment: React.FC<AddCommentProps> = ({ data, submit }) => {
         />
         <FlexRow className="flex-row">
           <img
-            src={data.currentUser.image.png.replace('.', 'src')}
+            src={apiState?.currentUser?.image?.png.replace('.', 'src')}
             alt="user image"
           />
           <button disabled={disabled}>send</button>

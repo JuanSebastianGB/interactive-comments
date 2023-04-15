@@ -2,13 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { v4 as random } from 'uuid';
 import { useUserContext } from '../../context';
-import { Comment } from '../../models';
 import { CommentSection } from '../CommentSection';
-export interface CommentsListProps {
-  comments: Comment[];
-}
+export interface CommentsListProps {}
 
-const CommentsList: React.FC<CommentsListProps> = ({ comments }) => {
+const CommentsList: React.FC<CommentsListProps> = () => {
   const { apiState } = useUserContext();
   const renderedComments = !!apiState?.comments ? (
     apiState?.comments.map((comment) => (

@@ -16,7 +16,7 @@ function App() {
   return (
     <UserProvider>
       <Container data-testid="comments-section">
-        <CommentsList {...data} />
+        <CommentsList />
         <AddComment data={data} />
       </Container>
     </UserProvider>

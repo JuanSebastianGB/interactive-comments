@@ -15,6 +15,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   score,
   replies,
   isReply,
+  id,
 }) => {
   const handleDecrement = () => {
     setActualScore((prev) => (prev === 0 ? 0 : prev - 1));
@@ -52,6 +53,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         <CommentSectionButtons
           isDifferentUser={isDifferent}
           isReply={Boolean(isReply)}
+          id={id}
         />
       </CommentSectionStyle>
       {replies?.length ? <ReplyList replies={replies} /> : null}

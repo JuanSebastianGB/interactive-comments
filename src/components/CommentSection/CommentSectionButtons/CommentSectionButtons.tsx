@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useUserContext } from '../../../context';
 import { Modal } from '../../Modal';
 import { Reply } from '../../icons';
 import Delete from '../../icons/Delete';
@@ -8,12 +9,14 @@ export interface CommentSectionButtonsProps {
   isReply?: boolean;
   isDifferentUser?: boolean;
   openModal: Function;
+  id: number;
 }
 
 const CommentSectionButtons: React.FC<CommentSectionButtonsProps> = ({
   isReply,
   isDifferentUser,
   openModal,
+  id,
 }) => {
   if (!isReply || (isDifferentUser && isReply))
     return (
@@ -49,7 +52,14 @@ const commentSectionButtonsWithStyle = (Component: {
   // @ts-ignore
   const WrappedComponent = (props) => {
     const [openModal, setOpenModal] = useState(false);
+    const { setApiState, apiState } = useUserContext();
 
+    const updateState = (id: number) => {
+      setApiState((prev) => ({
+        ...prev,
+        comments: prev.comments.filter((actual) => actual.id !== id),
+      }));
+    };
     return (
       <CommentSectionButtonsStyle className="reply">
         {/* @ts-ignore */}
