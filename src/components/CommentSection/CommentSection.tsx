@@ -6,6 +6,7 @@ import { ReplyList } from '../ReplyList';
 import { CommentSectionButtons } from './CommentSectionButtons';
 export interface CommentSectionProps extends Comment {
   isReply?: boolean;
+  replyingTo?: string;
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({
@@ -16,6 +17,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   replies,
   isReply,
   id,
+  replyingTo,
 }) => {
   const handleDecrement = () => {
     setActualScore((prev) => (prev === 0 ? 0 : prev - 1));
@@ -42,16 +44,22 @@ const CommentSection: React.FC<CommentSectionProps> = ({
             />
           </figure>
           <div className="username">{user?.username}</div>
+          {!isDifferent && <span className="you">You</span>}
           <span>{createdAt}</span>
         </div>
-        <p className="content">{content}</p>
+        <p className="content">
+          {replyingTo && (
+            <span className="color-blue">{`@${replyingTo} `}</span>
+          )}
+          {content}
+        </p>
         <div className="control">
           <button onClick={handleIncrement}>+</button>
           <span data-testid="comment-score">{actualScore}</span>
           <button onClick={handleDecrement}>-</button>
         </div>
         <CommentSectionButtons
-          isDifferentUser={isDifferent}
+          isSameUser={!isDifferent}
           isReply={Boolean(isReply)}
           id={id}
         />
@@ -74,7 +82,9 @@ export const CommentSectionStyle = styled.div`
   min-width: 100%;
   margin: 0 auto;
   background-color: var(--clr-white);
-
+  .color-blue {
+    color: var(--clr-blue);
+  }
   .header {
     grid-column: 1 / 8;
     grid-row: 1 / 2;
@@ -90,6 +100,11 @@ export const CommentSectionStyle = styled.div`
     }
     img {
       width: 100%;
+    }
+    .you {
+      color: var(--clr-white);
+      background-color: var(--clr-blue);
+      padding: 0.2rem 0.7rem;
     }
   }
   .content {

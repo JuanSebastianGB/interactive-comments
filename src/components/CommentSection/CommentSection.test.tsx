@@ -11,11 +11,6 @@ describe('CommentSection', () => {
     screen.getByText(/\+/);
     screen.getAllByText(/-/);
   });
-  it.concurrent('should have replay text', () => {
-    //@ts-ignore
-    render(<CommentSection />);
-    screen.getAllByText(/reply/i);
-  });
   it.concurrent('should render the given info', () => {
     const info = {
       user: {
@@ -128,8 +123,8 @@ describe('CommentSection', () => {
       expect(screen.getAllByRole('cell')).toHaveLength(2);
     }
   );
-  it.todo(
-    'if is a reply of the user should show Edit and Delete buttons',
+  it.concurrent(
+    'should show if is the same user Edit and Delete buttons',
     () => {
       cleanup();
       const mock = {
@@ -148,13 +143,36 @@ describe('CommentSection', () => {
         },
       };
       render(
-        <UserContext.Provider value={{ currentUser: mock }}>
+        <UserContext.Provider value={{ apiState: apiResponse }}>
           <CommentSection isReply {...mock} />
         </UserContext.Provider>
       );
-      screen.debug();
       screen.getByText(/edit/i);
       screen.getByText(/delete/i);
     }
   );
+  it.concurrent('should show YOU text if is the same user', () => {
+    cleanup();
+    const mock = {
+      id: 4,
+      content:
+        "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
+      createdAt: '2 days ago',
+      score: 2,
+      replyingTo: 'ramsesmiron',
+      user: {
+        image: {
+          png: './images/avatars/image-juliusomo.png',
+          webp: './images/avatars/image-juliusomo.webp',
+        },
+        username: 'juliusomo',
+      },
+    };
+    render(
+      <UserContext.Provider value={{ apiState: apiResponse }}>
+        <CommentSection {...mock} />
+      </UserContext.Provider>
+    );
+    screen.getByText(/YOU/i);
+  });
 });

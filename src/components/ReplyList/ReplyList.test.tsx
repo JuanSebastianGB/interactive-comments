@@ -1,10 +1,4 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { UserProvider } from '../../context';
 import { apiResponse } from '../mocks';
 import { ReplyList } from './ReplayList';
@@ -33,7 +27,7 @@ describe('ReplyList', () => {
     render(<ReplyList replies={apiResponse.comments[1].replies} />);
     screen.getByRole('list');
   });
-  it.concurrent('should remove a list item', async () => {
+  it.concurrent('should remove a list item', () => {
     const modalRoot = document.createElement('div');
     modalRoot.setAttribute('id', 'modal-root');
     document.body.appendChild(modalRoot);
@@ -56,9 +50,7 @@ describe('ReplyList', () => {
     const buttonDeleteComment = screen.getByText(/Yes, delete/i);
     fireEvent.click(buttonDeleteComment);
 
-    await waitFor(() => {
-      listItems = screen.queryAllByRole('listitem');
-      expect(listItems.length).toBe(2);
-    });
+    listItems = screen.queryAllByRole('listitem');
+    expect(listItems.length).toBe(2);
   });
 });

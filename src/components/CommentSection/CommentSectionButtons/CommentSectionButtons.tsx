@@ -6,25 +6,17 @@ import Delete from '../../icons/Delete';
 import Edit from '../../icons/Edit';
 export interface CommentSectionButtonsProps {
   isReply?: boolean;
-  isDifferentUser?: boolean;
+  isSameUser?: boolean;
   openModal: Function;
   id: number;
 }
 
 const CommentSectionButtons: React.FC<CommentSectionButtonsProps> = ({
-  isReply,
-  isDifferentUser,
+  isSameUser,
   openModal,
   id,
 }) => {
-  if (!isReply || (isDifferentUser && isReply))
-    return (
-      <>
-        <Reply />
-        <span role="button">Reply </span>
-      </>
-    );
-  if (!isDifferentUser && isReply)
+  if (isSameUser)
     return (
       <>
         <div role="button" className="btn btn-edit">
@@ -44,7 +36,12 @@ const CommentSectionButtons: React.FC<CommentSectionButtonsProps> = ({
         </div>
       </>
     );
-  return <></>;
+  return (
+    <>
+      <Reply />
+      <span role="button">Reply </span>
+    </>
+  );
 };
 
 const commentSectionButtonsWithStyle = (Component: {
