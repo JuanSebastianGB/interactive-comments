@@ -1,17 +1,19 @@
 import React from 'react';
 import { useSection } from '../../hooks/useSection';
-import { Comment } from '../../models';
+import { Reply } from '../../models';
 import { SectionStyles } from '../../styled-components/SectionStyles';
-import { FormEdit } from '../FormEdit';
-import { ReplyList } from '../ReplyList';
-import { FormCreateReply } from '../ReplySection/forms';
-import { CommentSectionButtons } from './CommentSectionButtons';
+import { CommentSectionButtons } from '../CommentSection/CommentSectionButtons';
+import { FormAdd } from '../FormAdd';
+import FormUpdateReply from './forms/FormUpdateReply';
+
 export interface CommentSectionProps {
-  comment: Comment;
+  reply: Reply;
+  commentId: number;
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({
-  comment: { user, content, createdAt, score, replies, id },
+const ReplySection: React.FC<CommentSectionProps> = ({
+  reply: { content, createdAt, id, replyingTo, score, user },
+  commentId,
 }) => {
   const {
     actualScore,
@@ -21,10 +23,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     controlState,
     controlDispatch,
   } = useSection({ score, user });
-
   return (
     <>
-      <SectionStyles data-testid={'list-element'}>
+      <SectionStyles
+        data-testid={'list-element'}
+        role="cell"
+        className="is-reply"
+      >
         <div className="header">
           <figure>
             <img
@@ -36,7 +41,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           {!isDifferent && <span className="you">You</span>}
           <span>{createdAt}</span>
         </div>
-        <p className="content">{content}</p>
+        <p className="content">
+          {replyingTo && (
+            <span className="color-blue">{`@${replyingTo} `}</span>
+          )}
+          {content}
+        </p>
         <div className="control">
           <button onClick={handleIncrement}>+</button>
           <span data-testid="comment-score">{actualScore}</span>
@@ -46,16 +56,17 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           isSameUser={!isDifferent}
           controlState={controlState}
           controlDispatch={controlDispatch}
-          isComment={true}
+          isComment={false}
         />
       </SectionStyles>
-
-      {controlState.isFormEditCommentOpen && <FormEdit commentId={id} />}
-      {controlState.isFormAddReplyOpen && <FormCreateReply commentId={id} />}
-
-      {replies?.length ? <ReplyList replies={replies} commentId={id} /> : null}
+      {controlState.isFormEditReplyOpen && (
+        <FormUpdateReply id={id} commentId={commentId} />
+      )}
+      {controlState.isFormAddReplyOpen && (
+        <FormAdd isComment={false} commentId={id} />
+      )}
     </>
   );
 };
 
-export default CommentSection;
+export default ReplySection;

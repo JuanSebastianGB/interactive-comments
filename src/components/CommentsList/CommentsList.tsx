@@ -9,7 +9,7 @@ const CommentsList: React.FC<CommentsListProps> = () => {
   const { apiState } = useUserContext();
   const renderedComments = !!apiState?.comments ? (
     apiState?.comments.map((comment) => (
-      <CommentSection key={random()} {...comment} />
+      <CommentSection key={random()} comment={comment} />
     ))
   ) : (
     <span>No comments</span>

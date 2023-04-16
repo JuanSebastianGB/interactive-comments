@@ -38,6 +38,13 @@ export const reducer = (state: UserComments, action: ActionType) => {
         ...state,
         comments: [...state.comments, action.payload],
       };
+    case type.EDIT_COMMENT:
+      return {
+        ...state,
+        comments: state.comments.map((comment) =>
+          comment.id === action.payload.id ? action.payload : comment
+        ),
+      };
 
     case type.ADD_REPLY:
       const { commentId, ...newReply } = action.payload;
@@ -56,6 +63,18 @@ export const reducer = (state: UserComments, action: ActionType) => {
         ...state,
         comments: updatedComments,
       };
+    case type.EDIT_REPLY: {
+      const { commentId, ...updatedReply } = action.payload;
+      const updatedComments = state.comments.map((comment) => {
+        if (comment.id !== commentId) return comment;
+        const updatedReplies = (comment.replies || []).map((reply) => {
+          if (reply.id === action.payload.id) return updatedReply;
+          return reply;
+        });
+        return { ...comment, replies: updatedReplies };
+      });
+      return { ...state, comments: updatedComments };
+    }
 
     default:
       return state;
