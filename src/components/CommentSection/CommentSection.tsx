@@ -5,7 +5,7 @@ import { SectionStyles } from '../../styled-components/SectionStyles';
 import { FormEdit } from '../FormEdit';
 import { ReplyList } from '../ReplyList';
 import { FormCreateReply } from '../ReplySection/forms';
-import { CommentSectionButtons } from './CommentSectionButtons';
+import { SectionButtons } from './SectionButtons';
 export interface CommentSectionProps {
   comment: Comment;
 }
@@ -42,11 +42,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           <span data-testid="comment-score">{actualScore}</span>
           <button onClick={handleDecrement}>-</button>
         </div>
-        <CommentSectionButtons
+        <SectionButtons
           isSameUser={!isDifferent}
-          controlState={controlState}
           controlDispatch={controlDispatch}
           isComment={true}
+          commentId={id}
         />
       </SectionStyles>
 

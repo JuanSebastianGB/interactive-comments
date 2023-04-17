@@ -45,6 +45,13 @@ export const reducer = (state: UserComments, action: ActionType) => {
           comment.id === action.payload.id ? action.payload : comment
         ),
       };
+    case type.DELETE_COMMENT:
+      return {
+        ...state,
+        comments: state?.comments?.filter(
+          (comment) => comment.id !== action.payload
+        ),
+      };
 
     case type.ADD_REPLY:
       const { commentId, ...newReply } = action.payload;

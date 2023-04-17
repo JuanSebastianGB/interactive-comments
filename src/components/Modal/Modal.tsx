@@ -6,9 +6,10 @@ import { type } from '../../types/type';
 export interface ModalProps {
   close: () => void;
   replyId?: number;
+  commentId?: number;
 }
 
-const Modal: React.FC<ModalProps> = ({ close, replyId }) => {
+const Modal: React.FC<ModalProps> = ({ close, replyId, commentId }) => {
   const { dispatch } = useUserContext();
   const modalRoot = document.getElementById('modal-root');
   if (!modalRoot) return null;
@@ -36,10 +37,9 @@ const Modal: React.FC<ModalProps> = ({ close, replyId }) => {
             className="btn btn-delete"
             onClick={() => {
               if (replyId)
-                dispatch({
-                  type: type.DELETE_REPLY,
-                  payload: replyId,
-                });
+                dispatch({ type: type.DELETE_REPLY, payload: replyId });
+              if (commentId)
+                dispatch({ type: type.DELETE_COMMENT, payload: commentId });
               close();
             }}
           >

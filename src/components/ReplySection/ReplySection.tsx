@@ -2,7 +2,7 @@ import React from 'react';
 import { useSection } from '../../hooks/useSection';
 import { Reply } from '../../models';
 import { SectionStyles } from '../../styled-components/SectionStyles';
-import { CommentSectionButtons } from '../CommentSection/CommentSectionButtons';
+import { SectionButtons } from '../CommentSection/SectionButtons';
 import { FormAdd } from '../FormAdd';
 import FormUpdateReply from './forms/FormUpdateReply';
 
@@ -52,11 +52,11 @@ const ReplySection: React.FC<CommentSectionProps> = ({
           <span data-testid="comment-score">{actualScore}</span>
           <button onClick={handleDecrement}>-</button>
         </div>
-        <CommentSectionButtons
+        <SectionButtons
           isSameUser={!isDifferent}
-          controlState={controlState}
           controlDispatch={controlDispatch}
           isComment={false}
+          replyId={id}
         />
       </SectionStyles>
       {controlState.isFormEditReplyOpen && (

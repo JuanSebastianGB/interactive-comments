@@ -6,6 +6,7 @@ export const type = {
   EDIT_COMMENT: 'EDIT_COMMENT',
   ADD_REPLY: 'ADD_REPLY',
   EDIT_REPLY: 'EDIT_REPLY',
+  DELETE_COMMENT: 'DELETE_COMMENT',
 };
 
 export const controlType = {

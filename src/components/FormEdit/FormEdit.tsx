@@ -46,7 +46,6 @@ const FormEdit: React.FC<FormAddProps> = ({
   };
   return (
     <FormStyle>
-      comment edition
       <form aria-label="form" onSubmit={handleSubmit}>
         <textarea
           name="textArea"
