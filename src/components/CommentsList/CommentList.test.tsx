@@ -11,13 +11,9 @@ describe('CommentList', () => {
     );
   });
   it.concurrent('should render a list of comments', () => {
-    // @ts-ignore
     render(<CommentsList />);
   });
   it.concurrent('should render a list of elements', () => {
-    // cleanup();
-    // const comments = [1, 2];
-    // @ts-ignore
     render(<CommentsList />);
     screen.getAllByTestId('list-element');
   });
@@ -27,7 +23,6 @@ describe('CommentList', () => {
       cleanup();
       render(<CommentsList />);
       expect(screen.queryAllByTestId('list-element')).toHaveLength(0);
-      // screen.getByText(/no comments/i);
     }
   );
   it.concurrent('should render text 1 month ago if comments provided', () => {

@@ -5,10 +5,13 @@ import { ReplyList } from './ReplayList';
 
 describe('ReplyList', () => {
   it.concurrent('should render a list of items', () => {
+    // @ts-ignore
     render(<ReplyList replies={apiResponse.comments[1].replies} />);
     screen.getAllByRole('listitem');
   });
   it.concurrent('should render a list of 2 items', () => {
+    // @ts-ignore
+
     render(<ReplyList replies={apiResponse.comments[1].replies} />);
 
     const listItems = screen.getAllByRole('listitem');
@@ -17,6 +20,8 @@ describe('ReplyList', () => {
   it.concurrent(
     'should not render elements if a length 0 list is passed ',
     () => {
+      // @ts-ignore
+
       render(<ReplyList replies={[]} />);
 
       const listItems = screen.queryAllByRole('listitem');
@@ -24,6 +29,8 @@ describe('ReplyList', () => {
     }
   );
   it.concurrent('should be able to found a list', () => {
+    // @ts-ignore
+
     render(<ReplyList replies={apiResponse.comments[1].replies} />);
     screen.getByRole('list');
   });
@@ -34,6 +41,7 @@ describe('ReplyList', () => {
 
     render(
       <UserProvider>
+        {/* @ts-ignore */}
         <ReplyList replies={apiResponse.comments[1].replies} />
       </UserProvider>
     );
