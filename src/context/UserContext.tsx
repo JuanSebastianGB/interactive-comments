@@ -12,8 +12,13 @@ interface Props {
   children: React.ReactNode;
 }
 
+const getInitialState = () => {
+  const localData = localStorage.getItem('localStorageData');
+  return localData ? JSON.parse(localData) : apiResponse;
+};
+
 export const UserProvider: React.FC<Props> = ({ children }) => {
-  const [apiState, dispatch] = useReducer(reducer, apiResponse);
+  const [apiState, dispatch] = useReducer(reducer, getInitialState());
   return (
     <UserContext.Provider value={{ apiState, dispatch }}>
       {children}

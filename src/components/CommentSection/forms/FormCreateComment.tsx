@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useUserContext } from '../../../context';
 import { timeSince } from '../../../helpers/date.helper';
+import { useLocalStorage } from '../../../hooks';
 import { FlexRow } from '../../../styled-components';
 import { FormStyle } from '../../../styled-components/FormStyle';
 import { type } from '../../../types/type';
@@ -9,7 +9,7 @@ export interface FormAddProps {
 }
 
 const FormCreateComment: React.FC<FormAddProps> = () => {
-  const { apiState, dispatch } = useUserContext();
+  const { apiState, dispatch } = useLocalStorage();
   const [textArea, setTextArea] = useState('');
   const [disabled, setDisabled] = useState(true);
   const handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -33,6 +33,7 @@ const FormCreateComment: React.FC<FormAddProps> = () => {
     setDisabled(false);
     setTextArea('');
   };
+
   return (
     <FormStyle>
       <form aria-label="form" onSubmit={handleSubmit}>

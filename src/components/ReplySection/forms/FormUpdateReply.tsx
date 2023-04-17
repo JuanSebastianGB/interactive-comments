@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useUserContext } from '../../../context';
+import { useLocalStorage } from '../../../hooks';
 import { FlexRow } from '../../../styled-components';
 import { FormStyle } from '../../../styled-components/FormStyle';
 import { type } from '../../../types/type';
@@ -9,7 +9,7 @@ export interface Props {
 }
 
 const FormUpdateReply: React.FC<Props> = ({ commentId, id }) => {
-  const { apiState, dispatch } = useUserContext();
+  const { apiState, dispatch } = useLocalStorage();
   const actualReply = useMemo(() => {
     const comment = apiState.comments.find(
       (comment) => comment.id === commentId
@@ -43,6 +43,7 @@ const FormUpdateReply: React.FC<Props> = ({ commentId, id }) => {
     setDisabled(false);
     setTextArea('');
   };
+
   return (
     <FormStyle>
       <form aria-label="form" onSubmit={handleSubmit}>

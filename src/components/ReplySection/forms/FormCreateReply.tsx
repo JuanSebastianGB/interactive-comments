@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { useUserContext } from '../../../context';
 import { timeSince } from '../../../helpers/date.helper';
+import { useLocalStorage } from '../../../hooks';
 import { Reply } from '../../../models';
 import { FlexRow } from '../../../styled-components';
 import { FormStyle } from '../../../styled-components/FormStyle';
@@ -16,7 +16,7 @@ const findMaxReplyId = (replies: Reply[]) =>
   }, 0);
 
 const FormCreateReply: React.FC<FormAddProps> = ({ commentId }) => {
-  const { apiState, dispatch } = useUserContext();
+  const { apiState, dispatch } = useLocalStorage();
   const [textArea, setTextArea] = useState('');
   const [disabled, setDisabled] = useState(true);
   const computeMaxReplyId = useCallback(findMaxReplyId, [apiState.comments]);
@@ -45,6 +45,8 @@ const FormCreateReply: React.FC<FormAddProps> = ({ commentId }) => {
     setDisabled(false);
     setTextArea('');
   };
+
+
   return (
     <FormStyle>
       <form aria-label="form" onSubmit={handleSubmit}>
