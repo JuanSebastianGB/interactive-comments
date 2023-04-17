@@ -1,10 +1,10 @@
 import { apiResponse } from '../components';
 
-const checkLocalStorageData = (localData: string | null) =>
-  !!JSON.parse(localData || '{}')?.currentUser;
-
 export const getInitialStateFromStorage = () => {
   const localData = localStorage.getItem('localStorageData');
-  if (checkLocalStorageData(localData)) return JSON.parse(localData as string);
+  const recoveredData = JSON.parse(localData || '{}');
+  const isDataStored =
+    Object.keys(recoveredData?.currentUser ?? {}).length !== 0;
+  if (isDataStored) return JSON.parse(localData as string);
   return apiResponse ?? {};
 };

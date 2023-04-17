@@ -30,7 +30,7 @@ describe('modal actions', () => {
     modalRoot.setAttribute('id', 'modal-root');
     document.body.appendChild(modalRoot);
 
-    render(<SectionButtons isReply={true} isDifferentUser={false} />);
+    render(<SectionButtons  isDifferentUser={false} />);
 
     const closeModalButton = screen.queryByText(/x/i);
     expect(closeModalButton).toBeNull();
@@ -43,7 +43,7 @@ describe('modal actions', () => {
       modalRoot.setAttribute('id', 'modal-root');
       document.body.appendChild(modalRoot);
 
-      render(<SectionButtons isReply={true} isSameUser={true} />);
+      render(<SectionButtons  isSameUser={true} />);
       const button = screen.getByTestId('open-modal-delete-comment');
       fireEvent.click(button);
       screen.getByRole('dialog');
@@ -57,7 +57,7 @@ describe('modal actions', () => {
     modalRoot.setAttribute('id', 'modal-root');
     document.body.appendChild(modalRoot);
 
-    render(<SectionButtons isReply={true} isSameUser={true} />);
+    render(<SectionButtons  isSameUser={true} />);
     const openButtonModal = screen.getByTestId('open-modal-delete-comment');
 
     fireEvent.click(openButtonModal);

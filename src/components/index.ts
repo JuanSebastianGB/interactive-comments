@@ -1,4 +1,3 @@
-export * from './AddComment';
 export * from './CommentSection';
 export * from './CommentSection/SectionButtons';
 export * from './CommentsList';
