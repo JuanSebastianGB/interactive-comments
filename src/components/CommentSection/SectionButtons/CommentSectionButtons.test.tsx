@@ -6,19 +6,23 @@ describe('SectionButtons', () => {
     cleanup();
   });
   it.concurrent('should render', () => {
+    // @ts-ignore
     render(<SectionButtons />);
   });
   it.concurrent('should have at least one button', () => {
+    // @ts-ignore
     render(<SectionButtons />);
     const buttons = screen.getAllByRole('button');
     expect(buttons.length).toBeGreaterThan(0);
   });
   it.concurrent('should have reply button if the user is the same', () => {
+    // @ts-ignore
     render(<SectionButtons isSameUser={true} />);
     screen.getByRole('button', { name: /Edit/i });
     screen.getByRole('button', { name: /Delete/i });
   });
   it.concurrent('should have replay button if the user is different', () => {
+    // @ts-ignore
     render(<SectionButtons isSameUser={false} />);
     screen.getByRole('button', { name: /reply/i });
   });
@@ -29,8 +33,8 @@ describe('modal actions', () => {
     const modalRoot = document.createElement('div');
     modalRoot.setAttribute('id', 'modal-root');
     document.body.appendChild(modalRoot);
-
-    render(<SectionButtons  isDifferentUser={false} />);
+    // @ts-ignore
+    render(<SectionButtons isDifferentUser={false} />);
 
     const closeModalButton = screen.queryByText(/x/i);
     expect(closeModalButton).toBeNull();
@@ -42,8 +46,8 @@ describe('modal actions', () => {
       const modalRoot = document.createElement('div');
       modalRoot.setAttribute('id', 'modal-root');
       document.body.appendChild(modalRoot);
-
-      render(<SectionButtons  isSameUser={true} />);
+      // @ts-ignore
+      render(<SectionButtons isSameUser={true} />);
       const button = screen.getByTestId('open-modal-delete-comment');
       fireEvent.click(button);
       screen.getByRole('dialog');
@@ -56,8 +60,8 @@ describe('modal actions', () => {
     const modalRoot = document.createElement('div');
     modalRoot.setAttribute('id', 'modal-root');
     document.body.appendChild(modalRoot);
-
-    render(<SectionButtons  isSameUser={true} />);
+    // @ts-ignore
+    render(<SectionButtons isSameUser={true} />);
     const openButtonModal = screen.getByTestId('open-modal-delete-comment');
 
     fireEvent.click(openButtonModal);
